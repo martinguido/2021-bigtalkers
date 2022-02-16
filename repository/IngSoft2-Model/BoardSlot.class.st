@@ -20,7 +20,7 @@ BoardSlot class >> withGrabCard [
 ]
 
 { #category : #'instance creation' }
-BoardSlot class >> withMoonwalkWithTwoStepsBack [
+BoardSlot class >> withMoonwalkWithFixedValue [
 
 	^ self new initializeWith: (Moonwalk withStepsBack: 2)
 ]

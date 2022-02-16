@@ -35,17 +35,9 @@ BoardSlotGenerator class >> validateTotalProbability: eventsDistribution [
 		ifFalse: [ Error signal: 'All probabilities must sum 1' ]
 ]
 
-{ #category : #generating }
-BoardSlotGenerator >> generate [
-
-	| events |
-	events := OrderedCollection new.
-	^ eventsPool atRandom: randomness
-]
-
 { #category : #initialization }
 BoardSlotGenerator >> initializeWith: eventsDistribution [
-	"Coverage issue: Message in use in BoardSlotGenerator class >> basedOn: "
+
 	randomness := Random new.
 	eventsPool := OrderedCollection new.
 	eventsDistribution

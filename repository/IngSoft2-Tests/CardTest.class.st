@@ -207,7 +207,7 @@ CardTest >> testAGameWithAnInstantRepeatCardWithLastEffectMoonwalk [
 		             BoardSlot withNoEffect.
 		             BoardSlot withNoEffect.
 		             BoardSlot withNoEffect.
-		             BoardSlot withMoonwalkWithTwoStepsBack.
+		             BoardSlot withMoonwalkWithFixedValue.
 		             BoardSlot withNoEffect }.
 	aBoard := Board withAll: someSlots.
 	aGame := BigTalkGame
@@ -242,7 +242,7 @@ CardTest >> testAGameWithAnInstantRepeatCardWithLastEffectSpeedUp [
 	someSlots := {BoardSlot withNoEffect.
 	BoardSlot withWormHole.
 	BoardSlot withSpeedUp.
-	BoardSlot withMoonwalkWithTwoStepsBack.
+	BoardSlot withMoonwalkWithFixedValue.
 	BoardSlot withAtomicBomb.
 	BoardSlot withNoEffect.
 	BoardSlot withNoEffect.
