@@ -46,6 +46,12 @@ Player >> initializeWith: aName [
 	name := aName
 ]
 
+{ #category : #'accessing - cards' }
+Player >> numberOfCardsInHand [
+
+	^ hand size
+]
+
 { #category : #'accessing - name' }
 Player >> playerName [
 

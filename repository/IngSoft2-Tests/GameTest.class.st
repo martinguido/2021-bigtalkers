@@ -487,6 +487,89 @@ GameTest >> testGamePlayerOneFallsInSpeedUp [
 ]
 
 { #category : #tests }
+GameTest >> testGamePlayerOneFallsInSprintAtTheStart [
+
+	| aDie aDice aBoard aGame slots  |
+	aDie := LoadedDie rolling: 3.
+	aDice := Dice with: {aDie}.
+	slots := {BoardSlot withNoEffect.
+	BoardSlot withNoEffect.
+	BoardSlot withSprint.
+	BoardSlot withNoEffect.
+	BoardSlot withNoEffect.
+	BoardSlot withNoEffect}.
+	aBoard := Board withAll: slots.
+	aGame := BigTalkGame
+		playedBy:
+			{player1.
+			player2}
+		usingDice: aDice
+		playedOn: aBoard
+		finishingAtLap: 3.
+	aGame moveCurrentPlayer.
+	self assert: (aGame currentSlotOf: player1) equals: 5.
+	self assert: (aGame currentLapOf: player1) equals: 0.
+]
+
+{ #category : #tests }
+GameTest >> testGamePlayerOneFallsInSprintWithThreeCardsInHand [
+
+	| aDie aDice aBoard aGame slots  speedDeck |
+	speedDeck := Deck onlySpeedCards.
+	aDie := LoadedDie rolling: 3.
+	aDice := Dice with: {aDie}.
+	slots := {BoardSlot withNoEffect.
+	BoardSlot withWormHole.
+	BoardSlot withSprint.
+	BoardSlot withMoonwalkWithFixedValue.
+	BoardSlot withAtomicBomb.
+	BoardSlot withNoEffect}.
+	aBoard := Board withAll: slots.
+	aGame := BigTalkGame
+		playedBy:
+			{player1.
+			player2}
+		usingDice: aDice
+		playedOn: aBoard
+		finishingAtLap: 3
+		usingDeck: speedDeck .
+	player1 drawCardFrom:  speedDeck.
+	aGame moveCurrentPlayer.
+	self assert: (aGame currentSlotOf: player1) equals: 6.
+	self assert: (aGame currentLapOf: player1) equals: 0.
+]
+
+{ #category : #tests }
+GameTest >> testGamePlayerOneFallsInSprintWithoutAnyCardsInHand [
+
+	| aDie aDice aBoard aGame slots  repeatDeck |
+	repeatDeck := Deck onlyRepeatCards.
+	aDie := LoadedDie rolling: 3.
+	aDice := Dice with: {aDie}.
+	slots := {BoardSlot withNoEffect.
+	BoardSlot withNoEffect.
+	BoardSlot withSprint.
+	BoardSlot withNoEffect.
+	BoardSlot withNoEffect.
+	BoardSlot withNoEffect}.
+	aBoard := Board withAll: slots.
+	aGame := BigTalkGame
+		playedBy:
+			{player1.
+			player2}
+		usingDice: aDice
+		playedOn: aBoard
+		finishingAtLap: 3
+		usingDeck: repeatDeck .
+	aGame repeatCardUsedBy: player1 targetting: player2.
+	aGame repeatCardUsedBy: player1 targetting: player2.
+	aGame moveCurrentPlayer.
+	self assert: (aGame currentSlotOf: player1) equals: 3.
+	self assert: (aGame currentLapOf: player1) equals: 0.
+	self assert: (aGame currentSlotOf: player2) equals: 0
+]
+
+{ #category : #tests }
 GameTest >> testGamePlayerOneFallsInWormhole [
 
 	| aDie aDice aBoard aGame slots |

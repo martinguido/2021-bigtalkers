@@ -98,6 +98,28 @@ CardTest >> testAGameWithACancellationAndNoActiveCards [
 ]
 
 { #category : #tests }
+CardTest >> testAGameWithAReversalCard [
+
+	| aGame aDie aBoard aDice |
+	player1 drawCardFrom: overloadDeck.
+	aDie := LoadedDie rolling: 4.
+	aDice := Dice with: {aDie}.
+	aBoard := Board sizedWithNoEffects: 6.
+	aGame := BigTalkGame
+		playedBy:
+			{player1.
+			player2}
+		usingDice: aDice
+		playedOn: aBoard
+		finishingAtLap: 1.
+	aGame overloadCardUsedBy: player1 targetting: player1.
+	aGame moveCurrentPlayer.
+	aGame moveCurrentPlayer.
+	self assert: (aGame currentSlotOf: player1) equals: 2.
+	self assert: (aGame currentSlotOf: player2) equals: 4
+]
+
+{ #category : #tests }
 CardTest >> testAGameWithASpeedCard [
 
 	| aGame aDie aBoard aDice aLeader |

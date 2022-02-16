@@ -129,6 +129,14 @@ BigTalkGame >> applySpeedUpTo: aPlayer [
 ]
 
 { #category : #'effect-application' }
+BigTalkGame >> applySprintTo: aPlayer [
+
+ 	| cardsInHand |
+	cardsInHand := aPlayer numberOfCardsInHand.
+	self playerMove: aPlayer slots: cardsInHand.
+]
+
+{ #category : #'effect-application' }
 BigTalkGame >> applyWormHoleTo: aPlayer [
 
 	self playerMove: aPlayer slots: -4

@@ -38,6 +38,12 @@ BoardSlot class >> withSpeedUp [
 ]
 
 { #category : #'instance creation' }
+BoardSlot class >> withSprint [
+
+	^ self new initializeWith: Sprint new
+]
+
+{ #category : #'instance creation' }
 BoardSlot class >> withWormHole [
 
 	^ self new initializeWith: WormHole new
