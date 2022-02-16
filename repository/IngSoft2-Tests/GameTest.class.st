@@ -139,7 +139,6 @@ GameTest >> testCheckPlayerLapAndPositionAfterMoving [
 { #category : #tests }
 GameTest >> testCheckPlayerPosition [
 
-
 	| aGame aDie aDice aBoard |
 	aDie := LoadedDie rolling: 4.
 	aDice := Dice with: {aDie}.

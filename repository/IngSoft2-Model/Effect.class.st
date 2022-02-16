@@ -9,3 +9,10 @@ Effect >> applyTo: aGame triggeredBy: aPlayer [
 
 	^ self subclassResponsibility
 ]
+
+{ #category : #'effect - invert' }
+Effect >> reverseEffect [
+
+	^ self subclassResponsibility
+
+]

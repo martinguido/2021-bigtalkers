@@ -18,9 +18,9 @@ Scoreboard >> findBestScore [
 
 	| bestScore |
 	bestScore := Association key: false value: Position startingPosition.
-	scoreboard associationsDo: [ :score | 
-		bestScore := self score: bestScore betterThan: score ].
-	^bestScore 
+	scoreboard
+		associationsDo: [ :score | bestScore := self score: bestScore betterThan: score ].
+	^ bestScore
 ]
 
 { #category : #initialization }
@@ -70,8 +70,10 @@ Scoreboard >> rankOf: aPlayer [
 
 { #category : #private }
 Scoreboard >> score: leader betterThan: anotherScore [
-	leader value <= anotherScore value  ifTrue: [ ^anotherScore ].
-	^leader
+
+	leader value <= anotherScore value
+		ifTrue: [ ^ anotherScore ].
+	^ leader
 ]
 
 { #category : #private }

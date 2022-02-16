@@ -61,8 +61,9 @@ Player >> playerName [
 { #category : #'accessing - cards' }
 Player >> useCardFromHand: aCard [
 
-	hand remove: aCard ifAbsent: [ 
-		hand isEmpty
-			ifTrue: [ Error signal: 'The player does not have any cards left' ]
-			ifFalse: [ Error signal: 'The player does not have that card' ] ]
+	hand
+		remove: aCard
+		ifAbsent: [ hand isEmpty
+				ifTrue: [ Error signal: 'The player does not have any cards left' ]
+				ifFalse: [ Error signal: 'The player does not have that card' ] ]
 ]

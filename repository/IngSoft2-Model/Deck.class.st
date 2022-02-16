@@ -51,6 +51,12 @@ Deck class >> onlyRepeatCards [
 ]
 
 { #category : #'instance creation' }
+Deck class >> onlyReversalCards [
+
+	^ self new initializeWith: {Reversal new}
+]
+
+{ #category : #'instance creation' }
 Deck class >> onlySpeedCards [
 
 	^ self new initializeWith: {Speed new}

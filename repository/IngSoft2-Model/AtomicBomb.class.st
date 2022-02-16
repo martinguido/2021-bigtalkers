@@ -9,3 +9,8 @@ AtomicBomb >> applyTo: aGame triggeredBy: aPlayer [
 
 	aGame applyAtomicBombTo: aPlayer. 
 ]
+
+{ #category : #'effect - invert' }
+AtomicBomb >> reverseEffect [
+ 
+]

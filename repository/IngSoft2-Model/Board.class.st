@@ -49,10 +49,10 @@ Board >> addPlayers: somePlayers [
 { #category : #private }
 Board >> applyEffectTo: aGame toPlayer: aPlayer [
 
-	| effect | 
-	effect := self effectAt: (self currentSlotOf: aPlayer ).
-	effect applyTo: aGame  triggeredBy: aPlayer.
- 	^effect
+	| effect |
+	effect := self effectAt: (self currentSlotOf: aPlayer).
+	effect applyTo: aGame triggeredBy: aPlayer.
+	^ effect
 ]
 
 { #category : #'accessing - positions' }
@@ -71,6 +71,12 @@ Board >> currentSlotOf: aPlayer [
 Board >> effectAt: aPosition [
 
 	^ (self slotAt: aPosition) effect
+]
+
+{ #category : #initialization }
+Board >> giveSlots [
+
+	^slots.
 ]
 
 { #category : #initialization }

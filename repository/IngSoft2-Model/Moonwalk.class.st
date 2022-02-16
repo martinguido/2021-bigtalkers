@@ -24,3 +24,10 @@ Moonwalk >> initializeWithN: aNumber [
 
 	N := aNumber
 ]
+
+{ #category : #'effect - invert' }
+Moonwalk >> reverseEffect [
+
+	N := N * -1.
+
+]

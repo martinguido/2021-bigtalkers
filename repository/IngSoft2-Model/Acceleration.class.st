@@ -13,6 +13,7 @@ Acceleration >> effect [
 { #category : #'private - validations' }
 Acceleration >> playableBy: aPlayer on: aGame affecting: target [
 
-	aGame currentTurnPlayer  ~= aPlayer ifTrue: [ Error
-				signal: 'Players can only play permanent cards during their turn' ].
+	aGame currentTurnPlayer ~= aPlayer
+		ifTrue: [ Error
+				signal: 'Players can only play permanent cards during their turn' ]
 ]

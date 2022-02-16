@@ -34,19 +34,19 @@ BoardSlot class >> withNoEffect [
 { #category : #'instance creation' }
 BoardSlot class >> withSpeedUp [
 
-	^ self new initializeWith: SpeedUp new
+	^ self new initializeWith: (SpeedUp withStepsForward )
 ]
 
 { #category : #'instance creation' }
 BoardSlot class >> withSprint [
 
-	^ self new initializeWith: Sprint new
+	^ self new initializeWith: Sprint withN.
 ]
 
 { #category : #'instance creation' }
 BoardSlot class >> withWormHole [
 
-	^ self new initializeWith: WormHole new
+	^ self new initializeWith:( WormHole withStepsBackwards) 
 ]
 
 { #category : #'accessing - effect' }
@@ -59,4 +59,10 @@ BoardSlot >> effect [
 BoardSlot >> initializeWith: anEffect [
 
 	effect := anEffect
+]
+
+{ #category : #'accessing - effect' }
+BoardSlot >> invertEffect [
+	
+	effect reverseEffect.
 ]

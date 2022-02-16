@@ -9,3 +9,7 @@ GrabCard >> applyTo: aGame triggeredBy: aPlayer [
 
 	aGame applyGrabCardTo: aPlayer
 ]
+
+{ #category : #'effect - invert' }
+GrabCard >> reverseEffect [ 
+]

@@ -26,7 +26,7 @@ BigTalkGame class >> playedBy: somePlayers usingDice: someDice playedOn: aBoard 
 		withDice: someDice
 		withBoard: aBoard
 		finishingAtLap: aLapNumber
-		withDeck: Deck default 
+		withDeck: Deck default
 ]
 
 { #category : #'instance creation' }
@@ -66,9 +66,9 @@ BigTalkGame class >> validateNoPlayers: somePlayers [
 ]
 
 { #category : #'playing - card usage' }
-BigTalkGame >> accelerationCardUsedBy: aPlayer [ 
+BigTalkGame >> accelerationCardUsedBy: aPlayer [
 
-self player: aPlayer usesCard: Acceleration new  on: players.
+	self player: aPlayer usesCard: Acceleration new on: players
 ]
 
 { #category : #'accessing - game' }
@@ -123,23 +123,23 @@ BigTalkGame >> applyMoonWalk: steps toPlayer: target [
 ]
 
 { #category : #'effect-application' }
-BigTalkGame >> applySpeedUpTo: aPlayer [
+BigTalkGame >> applySpeedUp: steps toPlayer:  aPlayer [
 
-	self playerMove: aPlayer slots: 4
+	self playerMove: aPlayer slots: steps
 ]
 
 { #category : #'effect-application' }
-BigTalkGame >> applySprintTo: aPlayer [
+BigTalkGame >> applySprint: forward toPlayer: aPlayer [
 
  	| cardsInHand |
 	cardsInHand := aPlayer numberOfCardsInHand.
-	self playerMove: aPlayer slots: cardsInHand.
+	self playerMove: aPlayer slots: (cardsInHand * forward).
 ]
 
 { #category : #'effect-application' }
-BigTalkGame >> applyWormHoleTo: aPlayer [
+BigTalkGame >> applyWormHole: steps toPlayer: aPlayer [
 
-	self playerMove: aPlayer slots: -4
+	self playerMove: aPlayer slots: steps
 ]
 
 { #category : #'private - validations' }
@@ -149,9 +149,14 @@ BigTalkGame >> assertGameIsNotFinished [
 ]
 
 { #category : #'playing - card usage' }
-BigTalkGame >> cancellationCardUsedBy: aPlayer targetting: target removing: aCancelledCard [ 
+BigTalkGame >> cancellationCardUsedBy: aPlayer targetting: target removing: aCancelledCard [
 
-self player: aPlayer usesCard: Cancellation new  on: {aCancelledCard.target}.
+	self
+		player: aPlayer
+		usesCard: Cancellation new
+		on:
+			{aCancelledCard.
+			target}
 ]
 
 { #category : #playing }
@@ -201,7 +206,9 @@ BigTalkGame >> initializeWithPlayers: somePlayers withDice: someDice withBoard: 
 	board addPlayers: somePlayers.
 	deck := aDeck.
 	self playersDrawStartingCards.
-	activeCards := ActiveCardController forPlayers: somePlayers.
+	activeCards := ActiveCardController
+		forPlayers: somePlayers
+		and: aBoard.
 	lastEffect := NoEffect new.
 	scoreboard := Scoreboard competingPlayers: somePlayers.
 	scoreboard update: board playerPositions.
@@ -241,7 +248,7 @@ BigTalkGame >> moveCurrentPlayer [
 { #category : #'playing - card usage' }
 BigTalkGame >> overloadCardUsedBy: aPlayer targetting: target [
 
-self player: aPlayer usesCard: Overload new  on: target.
+	self player: aPlayer usesCard: Overload new on: target
 ]
 
 { #category : #private }
@@ -293,13 +300,13 @@ BigTalkGame >> rankOf: aPlayer [
 { #category : #'playing - card usage' }
 BigTalkGame >> redoCardUsedBy: aPlayer [
 
-self player: aPlayer usesCard: Redo new  on: players.
+	self player: aPlayer usesCard: Redo new on: players
 ]
 
 { #category : #'playing - card usage' }
 BigTalkGame >> redoCardUsedBy: aPlayer targetting: target [
 
-self player: aPlayer usesCard: Redo new  on: target.
+	self player: aPlayer usesCard: Redo new on: target
 ]
 
 { #category : #'effect-application' }
@@ -311,17 +318,24 @@ BigTalkGame >> removeActiveCard: aCard from: target [
 { #category : #'playing - card usage' }
 BigTalkGame >> repeatCardUsedBy: aPlayer targetting: target [
 
-self player: aPlayer usesCard: Repeat new  on: target.
+	self player: aPlayer usesCard: Repeat new on: target.
+]
+
+{ #category : #'playing - card usage' }
+BigTalkGame >> reversalCardUsedBy: aPlayer targetting: aSlot [
+
+	self player: aPlayer usesCard: Reversal new on: aSlot.
+	aSlot invertEffect. 
 ]
 
 { #category : #'playing - card usage' }
 BigTalkGame >> speedCardUsedBy: aPlayer targetting: target [
 
-self player: aPlayer usesCard: Speed new  on: target.
+	self player: aPlayer usesCard: Speed new on: target
 ]
 
 { #category : #'private - validations' }
 BigTalkGame >> validatePlayabilityOn: aCard by: aPlayer affecting: target [
 
-	aCard playableBy: aPlayer on: self affecting: target 
+	aCard playableBy: aPlayer on: self affecting: target
 ]

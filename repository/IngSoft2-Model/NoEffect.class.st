@@ -8,3 +8,8 @@ Class {
 NoEffect >> applyTo: aGame triggeredBy: aPlayer [
 
 ]
+
+{ #category : #'effect - invert' }
+NoEffect >> reverseEffect [
+
+]
