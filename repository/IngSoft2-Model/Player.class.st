@@ -59,6 +59,15 @@ Player >> playerName [
 ]
 
 { #category : #'accessing - cards' }
+Player >> removeCardFromHand [
+
+	hand
+		remove: hand atRandom
+		ifAbsent: [ hand isEmpty
+				ifTrue: [ Error signal: 'The player does not have any cards left' ]]
+]
+
+{ #category : #'accessing - cards' }
 Player >> useCardFromHand: aCard [
 
 	hand

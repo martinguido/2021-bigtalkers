@@ -98,9 +98,11 @@ BigTalkGame >> applyCurrentEffect [
 ]
 
 { #category : #'effect-application' }
-BigTalkGame >> applyGrabCardTo: aPlayer [
+BigTalkGame >> applyGrabCard: N toPlayer: aPlayer [
 
-	self drawFromDeck: aPlayer
+	N > 0
+		ifTrue: [self drawFromDeck: aPlayer ]
+		ifFalse: [ self  removeCardFrom: aPlayer]
 ]
 
 { #category : #'effect-application' }
@@ -151,12 +153,14 @@ BigTalkGame >> assertGameIsNotFinished [
 { #category : #'playing - card usage' }
 BigTalkGame >> cancellationCardUsedBy: aPlayer targetting: target removing: aCancelledCard [
 
-	self
-		player: aPlayer
-		usesCard: Cancellation new
-		on:
-			{aCancelledCard.
-			target}
+	aCancelledCard = Reversal new
+		ifTrue: [ target invertEffect ]
+		ifFalse: [ self
+				player: aPlayer
+				usesCard: Cancellation new
+				on:
+					{aCancelledCard.
+					target} ]
 ]
 
 { #category : #playing }
@@ -258,6 +262,8 @@ BigTalkGame >> player: aPlayer usesCard: aCard on: target [
 	aPlayer useCardFromHand: aCard.
 	aCard applyOn: self to: target.
 	aCard = Redo new
+		ifTrue: [ lastCardUsed = Reversal new 
+				ifTrue: [ target invertEffect. ] ]
 		ifFalse: [ lastCardUsed := aCard ]
 ]
 
@@ -313,6 +319,13 @@ BigTalkGame >> redoCardUsedBy: aPlayer targetting: target [
 BigTalkGame >> removeActiveCard: aCard from: target [
 
 	activeCards remove: aCard from: target
+]
+
+{ #category : #'effect-application' }
+BigTalkGame >> removeCardFrom: aPlayer [
+
+	aPlayer removeCardFromHand.
+	
 ]
 
 { #category : #'playing - card usage' }

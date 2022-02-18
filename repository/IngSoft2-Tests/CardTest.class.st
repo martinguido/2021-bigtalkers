@@ -17,7 +17,8 @@ Class {
 		'repeatCard',
 		'redoCard',
 		'cancellationCard',
-		'reversalDeck'
+		'reversalDeck',
+		'reversalCard'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -39,6 +40,7 @@ CardTest >> setUp [
 	overloadCard := Overload new.
 	accelerationCard := Acceleration new.
 	repeatCard := Repeat new.
+	reversalCard := Reversal new.
 	redoCard := Redo new.
 	cancellationCard := Cancellation new
 ]
@@ -103,6 +105,44 @@ CardTest >> testAGameWithACancellationAndNoActiveCards [
 ]
 
 { #category : #tests }
+CardTest >> testAGameWithAReversalCardAndCancellation [
+
+	| aGame aDie aBoard aDice  slot1 slot2 slot3 slot4 slot5 slot6 slots |
+	player1 drawCardFrom: cancellationDeck.
+	aDie := LoadedDie rolling: 3.
+	aDice := Dice with: {aDie}.
+	slot1 := BoardSlot withNoEffect.
+	slot2 := BoardSlot withNoEffect.
+	slot3 := BoardSlot withSpeedUp.
+	slot4 := BoardSlot withNoEffect.
+	slot5 := BoardSlot withNoEffect.
+	slot6 := BoardSlot withNoEffect.
+	slots := {slot1.
+	slot2.
+	slot3.
+	slot4.
+	slot5.
+	slot6}.
+	aBoard := Board withAll: slots.
+	aGame := BigTalkGame
+		playedBy:
+			{player1.
+			player2}
+		usingDice: aDice
+		playedOn: aBoard
+		finishingAtLap: 3
+		usingDeck: reversalDeck.
+	aGame reversalCardUsedBy: player1 targetting: slot3.
+	aGame
+		cancellationCardUsedBy: player1
+		targetting: slot3
+		removing: reversalCard.
+	aGame moveCurrentPlayer.
+	self assert: (aGame currentSlotOf: player1) equals: 1.
+	self assert: (aGame currentLapOf: player1) equals: 1.
+]
+
+{ #category : #tests }
 CardTest >> testAGameWithAReversalCardToAtomicBomb [
 
 	| aDie aDice aBoard aGame slots slot1 slot2 slot3 slot4 slot5 slot6 |
@@ -133,6 +173,42 @@ CardTest >> testAGameWithAReversalCardToAtomicBomb [
 	aGame moveCurrentPlayer.
 	self assert: (aGame currentSlotOf: player1) equals: 0.
 	self assert: (aGame currentSlotOf: player2) equals: 0
+]
+
+{ #category : #tests }
+CardTest >> testAGameWithAReversalCardToGrabCard [
+
+	| aDie aDice aBoard aGame slots slot1 slot2 slot3 slot4 slot5 slot6 |
+	aDie := LoadedDie rolling: 3.
+	aDice := Dice with: {aDie}.
+	slot1 := BoardSlot withNoEffect.
+	slot2 := BoardSlot withNoEffect.
+	slot3 := BoardSlot withGrabCard.
+	slot4 := BoardSlot withNoEffect.
+	slot5 := BoardSlot withNoEffect.
+	slot6 := BoardSlot withNoEffect.
+	slots := {slot1.
+	slot2.
+	slot3.
+	slot4.
+	slot5.
+	slot6}.
+	aBoard := Board withAll: slots.
+	aGame := BigTalkGame
+		playedBy:
+			{player1.
+			player2}
+		usingDice: aDice
+		playedOn: aBoard
+		finishingAtLap: 3
+		usingDeck: reversalDeck.
+	aGame reversalCardUsedBy: player1 targetting: slot3.
+	aGame moveCurrentPlayer.
+	aGame moveCurrentPlayer.
+	self
+		should: [ aGame reversalCardUsedBy: player1 targetting: slot3 ]
+		raise: Error
+		withMessage: 'The player does not have any cards left'
 ]
 
 { #category : #tests }
@@ -172,13 +248,13 @@ CardTest >> testAGameWithAReversalCardToMoonwalk [
 CardTest >> testAGameWithAReversalCardToSpeedUp [
 
 	| aDie aDice aBoard aGame slots slot1 slot2 slot3 slot4 slot5 slot6 |
-	aDie := LoadedDie rolling: 3.
+	aDie := LoadedDie rolling: 5.
 	aDice := Dice with: {aDie}.
 	slot1 := BoardSlot withNoEffect.
 	slot2 := BoardSlot withNoEffect.
-	slot3 := BoardSlot withSpeedUp.
+	slot3 := BoardSlot withNoEffect.
 	slot4 := BoardSlot withNoEffect.
-	slot5 := BoardSlot withNoEffect.
+	slot5 := BoardSlot withSpeedUp.
 	slot6 := BoardSlot withNoEffect.
 	slots := {slot1.
 	slot2.
@@ -195,9 +271,9 @@ CardTest >> testAGameWithAReversalCardToSpeedUp [
 		playedOn: aBoard
 		finishingAtLap: 3
 		usingDeck: reversalDeck.
-	aGame reversalCardUsedBy: player1 targetting: slot3.
+	aGame reversalCardUsedBy: player1 targetting: slot5.
 	aGame moveCurrentPlayer.
-	self assert: (aGame currentSlotOf: player1) equals: 0.
+	self assert: (aGame currentSlotOf: player1) equals: 1.
 	self assert: (aGame currentSlotOf: player2) equals: 0
 ]
 
@@ -232,6 +308,43 @@ CardTest >> testAGameWithAReversalCardToSprint [
 	aGame moveCurrentPlayer.
 	self assert: (aGame currentSlotOf: player1) equals: 2.
 	self assert: (aGame currentSlotOf: player2) equals: 0
+]
+
+{ #category : #tests }
+CardTest >> testAGameWithAReversalCardToTwoSlots [
+
+	| aDie aDice aBoard aGame slots slot1 slot2 slot3 slot4 slot5 slot6 |
+	aDie := LoadedDie rolling: 3.
+	aDice := Dice with: {aDie}.
+	slot1 := BoardSlot withNoEffect.
+	slot2 := BoardSlot withNoEffect.
+	slot3 := BoardSlot withAtomicBomb.
+	slot4 := BoardSlot withNoEffect.
+	slot5 := BoardSlot withNoEffect.
+	slot6 := BoardSlot withNoEffect.
+	slots := {slot1.
+	slot2.
+	slot3.
+	slot4.
+	slot5.
+	slot6}.
+	aBoard := Board withAll: slots.
+	aGame := BigTalkGame
+		playedBy:
+			{player1.
+			player2}
+		usingDice: aDice
+		playedOn: aBoard
+		finishingAtLap: 3
+		usingDeck: reversalDeck.
+	self
+		should: [ aGame
+				reversalCardUsedBy: player1
+				targetting:
+					{slot1.
+					slot2} ]
+		raise: Error
+		withMessage: 'This card can only be played on 1 slot'
 ]
 
 { #category : #tests }
@@ -443,6 +556,35 @@ CardTest >> testAGameWithAnInstantRepeatCardWithLastEffectSpeedUp [
 ]
 
 { #category : #tests }
+CardTest >> testAGameWithAnInstantRepeatCardWithLastEffectSprint [
+
+	| aGame aDie aBoard aDice someSlots |
+	player2 drawCardFrom: repeatDeck.
+	aDie := LoadedDie rolling: 4.
+	aDice := Dice with: {aDie}.
+	someSlots := {BoardSlot withNoEffect.
+	BoardSlot withNoEffect.
+	BoardSlot withNoEffect.
+	BoardSlot withNoEffect.
+	BoardSlot withNoEffect.
+	BoardSlot withNoEffect.
+	BoardSlot withNoEffect.
+	BoardSlot withSprint}.
+	aBoard := Board withAll: someSlots.
+	aGame := BigTalkGame
+		playedBy:
+			{player1.
+			player2}
+		usingDice: aDice
+		playedOn: aBoard
+		finishingAtLap: 2.
+	3 timesRepeat: [ aGame moveCurrentPlayer ].
+	aGame repeatCardUsedBy: player2 targetting: player1.
+	self assert: (aGame currentSlotOf: player1) equals: 4.
+	self assert: (aGame currentLapOf: player1) equals: 1.
+]
+
+{ #category : #tests }
 CardTest >> testAGameWithAnInstantRepeatCardWithLastEffectWormHole [
 
 	| aGame aDie aBoard aDice aLeaderPosition someSlots |
@@ -568,6 +710,40 @@ CardTest >> testAGameWithDoubleRedoAnAcceleration [
 	aGame moveCurrentPlayer.
 	self assert: (aGame currentSlotOf: player1) equals: 7.
 	self assert: (aGame currentSlotOf: player2) equals: 7
+]
+
+{ #category : #tests }
+CardTest >> testAGameWithRedoAReversal [
+
+	| aDie aDice aBoard aGame slots slot1 slot2 slot3 slot4 slot5 slot6 |
+	player1 drawCardFrom: redoDeck.
+	aDie := LoadedDie rolling: 5.
+	aDice := Dice with: {aDie}.
+	slot1 := BoardSlot withNoEffect.
+	slot2 := BoardSlot withNoEffect.
+	slot3 := BoardSlot withNoEffect.
+	slot4 := BoardSlot withNoEffect.
+	slot5 := BoardSlot withSprint.
+	slot6 := BoardSlot withNoEffect.
+	slots := {slot1.
+	slot2.
+	slot3.
+	slot4.
+	slot5.
+	slot6}.
+	aBoard := Board withAll: slots.
+	aGame := BigTalkGame
+		playedBy:
+			{player1.
+			player2}
+		usingDice: aDice
+		playedOn: aBoard
+		finishingAtLap: 3
+		usingDeck: reversalDeck.
+	 aGame reversalCardUsedBy: player1 targetting: slot5.
+	aGame redoCardUsedBy: player1 targetting: slot5.
+	aGame moveCurrentPlayer.
+	self assert: (aGame currentSlotOf: player1) equals: 6.
 ]
 
 { #category : #tests }

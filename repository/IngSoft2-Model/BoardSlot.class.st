@@ -16,7 +16,7 @@ BoardSlot class >> withAtomicBomb [
 { #category : #'instance creation' }
 BoardSlot class >> withGrabCard [
 
-	^ self new initializeWith: GrabCard new
+	^ self new initializeWith: (GrabCard withN: 1).
 ]
 
 { #category : #'instance creation' }
